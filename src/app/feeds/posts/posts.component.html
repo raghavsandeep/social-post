@@ -1,0 +1,171 @@
+<div class="row max-width-box">
+  <div class="col-12 col-md-12">
+    <div class="row p-2">
+      <div class="col-12 col-md-12">
+        <!--Heading-->
+        <p class="page-heading">World is waiting to hear from you!</p>
+      </div>
+      <div class="col-12 col-md-12">
+        <div class="post-box">
+          <div class="textbox" data-toggle="modal" data-target="#myModal">Write something here</div>
+          <div class="row bt-2">
+            <div class="col-12 col-md-12 plr0">
+              <button class="photo-btn" data-toggle="modal" data-target="#myModal"><img
+                  src="assets/images/img-icon.png"> PHOTO</button>
+              <button class="publish-btn" data-toggle="modal" data-target="#myModal">PUBLISH</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-12 mt20">
+        <div class="row mt40">
+          <div class="col-12 col-md-12">
+            <div class="row p-3">
+              <div class="col-12 col-md-12 post-card" *ngFor="let feed of post; let i = index">
+                <!--Post box-->
+                <div class="row">
+                  <div class="">
+                    <img src='assets/images/dummy.png' class="user-icon" alt="">
+                  </div>
+                  <div class="col-10 col-md-6">
+                    <p class="username"><span>Dummy Name</span></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <!--post content-->
+                  <div class="col-12 col-md-12">
+                    <p class="post-text">
+                      {{feed.post_text}}
+                    </p>
+                  </div>
+                  <div class="col-12 col-md-12 post-image">
+                    <img *ngFor="let feed1 of feed.post_image; let i = index" src="{{feed1}}" alt="">
+                  </div>
+                  <div class="col-12 col-md-12">
+                    <!--like comment share-->
+                    <div class="row pt-2 top-border">
+                      <div class="col-12 col-md-6 lh38">
+                        <span class="info like-info">{{feed.islike}} likes</span>
+                        <span class="dot-span"></span>
+                        <span class="info Comment-info ml10">{{feed.comments_count}} comments</span>
+                      </div>
+                      <div class="col-12 col-md-6 text-right">
+                        <span class="actions like-span" *ngIf="feed.islike == 0" (click)="likePost(i)"><i
+                            class="fa fa-heart-o fa-2x"></i> <span class="va-super">Like</span></span>
+                        <span class="actions like-span" *ngIf="feed.islike == 1" (click)="unlikePost(i)"><i
+                            style="color: #f8891f;" class="fa fa-heart-o fa-2x"></i> <span
+                            class="va-super">Unlike</span></span>
+                        <span class="actions" (click)="getComment(i)"><i class="fa fa-comment-o fa-2x"></i>
+                          <span>Comment</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" [className]="selectedMessage.indexOf(i)>-1 ?
+                            'pointer selected' : 'pointer'">
+                      <div class="col-12 col-md-12 p0 comments">
+                        <input [(ngModel)]="feed.message" type="text">
+                        <button (click)="createComment(i,feed.id, feed.message, feed)"><img src="assets/images/send.svg"
+                            alt=""></button>
+                      </div>
+                      <div class="col-12 col-md-12 p0">
+                        <div *ngFor="let item of feed.iscomment let j = index" class="">
+                          <div class="profile-icon">
+                            <img src='assets/images/dummy.png' alt="">
+                          </div>
+                          <div class="comment-text showmessage">
+                            <div class="fs-15"><strong>Dummy Name</strong></div>
+                            <div class="light-font fs-15">{{item.comment}}</div>
+                            <div class="row">
+                              <div class="col-12 col-md-12">
+                                <span *ngIf="item.islike == 0" (click)="likeComment(i, j)"><i
+                                    class="fa fa-heart-o fa-lg"></i> <span class="va-super"></span></span>
+                                <span *ngIf="item.islike == 1"
+                                  (click)="unlikeComment(i, j)"><i
+                                    class="fa fa-heart-o fa-lg orange-text"></i> <span class="va-super"></span></span>
+                                <span class="ml-2" (click)="getreply(j)"><i class="fa fa-comment-o fa-lg"></i>
+                                  <span></span>
+                                </span>
+                              </div>
+                              <div class="col-12 col-md-12 p0 comments" [className]="selectedreply.indexOf(j)>-1 ?
+                                      'col-12 col-md-12 pointer selected comments orange-text' : 'pointer'">
+                                <input [(ngModel)]="item.reply" type="text">
+                                <button (click)="createreply(i,item.id, item.reply, feed, j)"><img
+                                    src="assets/images/send.svg" alt=""></button>
+                              </div>
+                              <div class="col-12 col-md-12">
+                                <div class="row reply-padding">
+                                  <div class="col-12 col-md-12 reply">
+                                    <div class="light-font fs-15 comment-reply" *ngFor="let item1 of item.isreply">
+                                      <div class="profile-icon">
+                                        <img src='assets/images/dummy.png' alt="">
+                                      </div>
+                                      <div class="comment-text showreply">
+                                        <div class="fs-15 fw-800"><b>Dummy Name</b></div>
+                                        <div class="light-font fs-15">{{item1.comment}}</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Button to Open the Modal -->
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog modal-lg my-dialog-margin-size">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header my-modal-header">
+        <span class="modal-title">Create a post</span>
+        <button type="button" class="close" #closeBtn data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row post-box-modal">
+          <div class="col-12 col-md-12">
+            <textarea name="" [(ngModel)]="postContent"></textarea>
+            <input #image type="file" accept="image/*" style="visibility: hidden;" multiple
+              (change)="detectFiles($event)">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-12 image-preview">
+            <div class="image-preview-inside" *ngFor="let url of urls; let i = index">
+              <img *ngIf="type == 'image'" [src]="url" class="rounded mb-3" width="180">
+              <button type="button" class="remove-img" (click)="removeImage(i)">&times;</button>
+              <i></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-12">
+          <div class="row bt-2">
+            <div class="col-12 col-md-12">
+              <button class="photo-btn" (click)='image.click()' (click)="checkType('image')"><img
+                  src="assets/images/img-icon.png"> PHOTO</button>
+              <!-- <button class="video-btn" (click)='video.click()' (click)="checkType('video')"><img src="assets/images/video-icon.png"> ADD VIDEO</button> -->
+              <button class="publish-btn" (click)="creatPost()">PUBLISH</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
